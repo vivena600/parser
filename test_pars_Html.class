@@ -1,0 +1,37 @@
+package org.example;
+
+import org.w3c.dom.Document;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class test_pars_Html {
+    public static void main(String[] args) {
+        try {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Введите имя файла (html):");
+            String localFilename = scanner.nextLine();
+            String urlData = "https://sso.agc.gov.sg/Act/TSFA2002?ProvIds=Sc1-#Sc1-";
+
+            // Скачивание HTML-файла по URL
+            parsingHtml.downloadHtml(urlData, localFilename);
+
+            // Загрузка и парсинг HTML-файла
+            File htmlFile = new File(localFilename);
+            Document xmlDocument = parsingHtml.parseHtml(htmlFile);
+
+            System.out.println("Введите название файла для сохранения (с расширением .xml): ");
+            String outputXmlFilePath = scanner.nextLine();
+
+            // Сохранение XML-документа
+            parsingHtml.saveXmlDocument(xmlDocument, outputXmlFilePath);
+
+            System.out.println("XML file generated successfully: " + outputXmlFilePath);
+        } catch (IOException | ParserConfigurationException | TransformerException e) {
+            e.printStackTrace();
+        }
+    }
+}
